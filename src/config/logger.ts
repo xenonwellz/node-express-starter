@@ -1,10 +1,11 @@
-import { createLogger, format, transports } from "winston";
+import {createLogger, format, transports} from "winston";
 import env from "./env";
+
 const nodeEnv = env.get("NODE_ENV");
 
 const enumerateErrorFormat = format((info: any) => {
     if (info instanceof Error) {
-        Object.assign(info, { message: info.stack });
+        Object.assign(info, {message: info.stack});
     }
     return info;
 });
@@ -15,7 +16,7 @@ const logger = createLogger({
         enumerateErrorFormat(),
         nodeEnv === "development" ? format.colorize() : format.uncolorize(),
         format.splat(),
-        format.printf(({ level, message }: any) => `${level}: ${message}`)
+        format.printf(({level, message}: any) => `[${level}]: ${message}`)
     ),
     transports: [
         new transports.Console({
